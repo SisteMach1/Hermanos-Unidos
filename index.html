@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermanos Unidos - Iglesia Virtual Argentina</title>
+<meta name="description" content="Iglesia virtual Hermanos Unidos. Prédicas, radio 24/7, testimonios y comunidad.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F172A">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{playfair:['Playfair Display'],inter:['Inter']},colors:{nx:'#FF6900',gold:'#D4A574'}}}}
+</script>
+</head>
+<body class="font-inter bg-[#FEFEFE] text-slate-900">
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center gap-2"><div class="w-9 h-9 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold">HU</div><span class="font-playfair font-bold text-xl">Hermanos Unidos</span></div>
+    <div class="hidden md:flex gap-6 text-sm"><a href="#predicas">Prédicas</a><a href="#videos">Videos</a><a href="#testimonios">Testimonios</a><a href="#horarios">Horarios</a></div>
+    <div class="flex gap-2">
+      <button onclick="document.getElementById('liveModal').classList.remove('hidden')" class="bg-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold animate-pulse">🔴 EN VIVO</button>
+      <a href="#donar" class="bg-nx text-white px-4 py-1.5 rounded-full text-sm font-bold">Donar</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative bg-slate-900 text-white overflow-hidden">
+  <img src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-30">
+  <div class="relative max-w-7xl mx-auto px-4 py-20 md:py-28">
+    <h1 class="font-playfair text-4xl md:text-6xl font-bold max-w-3xl leading-tight">Bienvenidos a Casa.<br>Dios te está esperando.</h1>
+    <p class="mt-4 text-slate-300 max-w-xl">Iglesia virtual para toda Argentina. Prédicas, adoración y comunidad las 24hs.</p>
+    <div class="mt-6 flex gap-3">
+      <a href="#predicas" class="bg-white text-slate-900 px-6 py-3 rounded-full font-bold">Ver Prédica de Hoy</a>
+      <button onclick="toggleRadio()" class="border border-white/30 px-6 py-3 rounded-full">Escuchar Radio</button>
+    </div>
+    <div class="mt-6 text-xs text-slate-400"><span id="conectados">1,247</span> hermanos conectados ahora • <span id="subsCount">342</span> suscriptos a WhatsApp</div>
+  </div>
+</section>
+
+<!-- DEVOCIONAL + ORACIÓN -->
+<section class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-4">
+  <div class="md:col-span-2 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-6 rounded-[24px]">
+    <div class="text-xs font-bold text-amber-700">DEVOCIONAL DE HOY</div>
+    <h3 class="font-playfair text-2xl mt-2" id="devTitle">Dios renueva tus fuerzas</h3>
+    <p class="mt-2 text-slate-600 text-sm" id="devText">"Pero los que esperan a Jehová tendrán nuevas fuerzas; levantarán alas como las águilas..." Isaías 40:31. Hoy es un nuevo comienzo para vos.</p>
+  </div>
+  <div class="bg-slate-900 text-white p-6 rounded-[24px]">
+    <h3 class="font-bold">🙏 Pedí Oración</h3>
+    <input id="oracionNombre" placeholder="Tu nombre" class="mt-3 w-full px-3 py-2 rounded-xl bg-white/10 text-sm">
+    <textarea id="oracionTexto" placeholder="Tu pedido..." class="mt-2 w-full px-3 py-2 rounded-xl bg-white/10 text-sm h-20"></textarea>
+    <button onclick="enviarOracion()" class="mt-2 w-full bg-nx py-2 rounded-xl text-sm font-bold">Enviar Pedido</button>
+    <div class="mt-2 text-xs text-slate-400"><span id="oracionesCount">1,432</span> oraciones respondidas</div>
+  </div>
+</section>
+
+<!-- PREDICAS ESCRITAS -->
+<section id="predicas" class="max-w-7xl mx-auto px-4 py-12">
+  <h2 class="font-playfair text-3xl font-bold">Prédicas Escritas</h2>
+  <div class="mt-4 flex gap-2"><input id="searchPredica" oninput="filtrarPredicas()" placeholder="Buscar prédica..." class="border px-3 py-2 rounded-full text-sm"><select id="catPredica" onchange="filtrarPredicas()" class="border px-3 py-2 rounded-full text-sm"><option value="">Todas</option><option>Fe</option><option>Familia</option><option>Sanidad</option><option>Propósitos</option></select></div>
+  <div id="predicasGrid" class="mt-6 grid md:grid-cols-3 gap-4"></div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" class="bg-slate-50 py-12">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="font-playfair text-3xl font-bold">Videos de Prédicas</h2>
+    <div id="videosGrid" class="mt-6 grid md:grid-cols-3 gap-4"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios" class="max-w-7xl mx-auto px-4 py-12">
+  <h2 class="font-playfair text-3xl font-bold">Testimonios</h2>
+  <div id="testiCarousel" class="mt-6 flex gap-4 overflow-x-auto pb-4"></div>
+  <div class="mt-4 bg-white border p-4 rounded-2xl">
+    <h4 class="font-bold text-sm">Compartir mi testimonio</h4>
+    <div class="grid md:grid-cols-3 gap-2 mt-2">
+      <input id="tNombre" placeholder="Nombre" class="border px-3 py-2 rounded-xl text-sm">
+      <input id="tProv" placeholder="Provincia" class="border px-3 py-2 rounded-xl text-sm">
+      <input id="tTexto" placeholder="Mi testimonio..." class="border px-3 py-2 rounded-xl text-sm">
+    </div>
+    <button onclick="agregarTestimonio()" class="mt-2 bg-slate-900 text-white px-4 py-2 rounded-full text-sm">Publicar</button>
+  </div>
+</section>
+
+<!-- HORARIOS -->
+<section id="horarios" class="bg-slate-900 text-white py-12">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="font-playfair text-3xl font-bold">Horarios de Cultos - Todo el País</h2>
+    <div id="sedesGrid" class="mt-6 grid md:grid-cols-4 gap-3"></div>
+  </div>
+</section>
+
+<!-- DONAR - SOLO ALIAS -->
+<section id="donar" class="py-16 bg-gradient-to-b from-slate-900 to-slate-800">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="font-playfair text-4xl text-white font-bold">Sostener Hermanos Unidos es sembrar en bendición</h2>
+    <p class="mt-3 text-gold italic">"Cada uno dé como propuso en su corazón... porque Dios ama al dador alegre. 2 Cor 9:7"</p>
+    <div class="mt-8 bg-white rounded-[24px] p-6 md:p-8 shadow-2xl max-w-md mx-auto">
+      <div class="bg-nx text-white text-xs font-bold py-2 rounded-xl">NARANJA X - DONACIÓN DIRECTA</div>
+      <div class="mt-4 text-xs text-slate-500">ALIAS</div>
+      <div class="text-3xl font-bold">maxinaranja2025</div>
+      <button onclick="copiarAlias()" class="mt-4 w-full bg-nx text-white py-3 rounded-full font-bold">Copiar Alias</button>
+      <div class="mt-4 grid grid-cols-10 gap-1 max-w-[160px] mx-auto">
+        <script>document.write(Array(100).fill(0).map(()=>`<div class="w-3 h-3 ${Math.random()>0.5?'bg-black':'bg-white'} border border-black/10"></div>`).join(''))</script>
+      </div>
+      <div class="mt-4 flex justify-center gap-2 text-[11px]"><span class="bg-orange-100 text-nx px-2 py-1 rounded-full">1. Copiá alias</span><span class="bg-orange-100 text-nx px-2 py-1 rounded-full">2. Abrí Naranja X</span><span class="bg-orange-100 text-nx px-2 py-1 rounded-full">3. Transferí</span></div>
+      <div class="mt-4 text-[11px] text-slate-400">100% seguro - Va directo a Hermanos Unidos</div>
+      <div class="mt-6 text-left">
+        <div class="text-xs">Meta radio 24/7: $500.000</div>
+        <div class="w-full bg-slate-200 h-2 rounded-full mt-1"><div id="metaBar" class="bg-nx h-2 rounded-full" style="width:69%"></div></div>
+        <div class="text-xs mt-1"><span id="recaudado">$347.000</span> recaudado (69%)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUSCRIPCIÓN WHATSAPP -->
+<section class="bg-nx py-10">
+  <div class="max-w-3xl mx-auto px-4 text-center text-white">
+    <h3 class="font-playfair text-2xl font-bold">Recibí el mensaje diario en tu WhatsApp 🙏</h3>
+    <p class="text-sm opacity-90 mt-1">Versículo + prédica corta todos los días a las 7AM</p>
+    <div class="mt-4 flex gap-2 max-w-md mx-auto">
+      <input id="waNombre" placeholder="Tu nombre" class="flex-1 px-4 py-3 rounded-full text-slate-900 text-sm">
+      <input id="waNumero" placeholder="WhatsApp ej: 385..." class="flex-1 px-4 py-3 rounded-full text-slate-900 text-sm">
+      <button onclick="suscribirWA()" class="bg-slate-900 px-6 py-3 rounded-full font-bold text-sm">Unirme</button>
+    </div>
+    <div class="text-xs mt-2 opacity-80">Ya somos <span id="waTotal">342</span> hermanos recibiendo el mensaje</div>
+  </div>
+</section>
+
+<footer class="bg-black text-slate-400 text-xs py-6 text-center">
+  Hermanos Unidos - Iglesia Virtual Argentina • Donaciones: Naranja X maxinaranja2025 • <a href="admin.html" class="underline">Admin</a>
+</footer>
+
+<!-- PLAYER FLOTANTE -->
+<div id="radioPlayer" class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-2xl p-3 flex items-center justify-between z-50">
+  <div class="flex items-center gap-3"><button id="radioBtn" onclick="toggleRadio()" class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center">▶</button><div><div class="text-sm font-bold">Radio Hermanos Unidos 24/7</div><div class="text-xs text-slate-500">Adoración continua</div></div></div>
+  <div class="hidden md:flex gap-2 text-xs" id="ytPlaylist"></div>
+  <div class="flex items-center gap-2"><input type="range" id="vol" min="0" max="100" value="80" class="w-20"><button onclick="document.getElementById('radioPlayer').classList.add('hidden')" class="text-xs">X</button></div>
+</div>
+
+<!-- LIVE MODAL -->
+<div id="liveModal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-3xl w-full p-4"><div class="flex justify-between"><h3 class="font-bold">🔴 Transmisión en Vivo</h3><button onclick="document.getElementById('liveModal').classList.add('hidden')">X</button></div><div class="mt-4 aspect-video bg-black rounded-xl overflow-hidden"><iframe id="liveFrame" class="w-full h-full" src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1" allowfullscreen></iframe></div><div id="liveChat" class="mt-3 h-32 overflow-y-auto text-xs bg-slate-50 p-2 rounded-xl"></div></div></div>
+
+<script src="app.js"></script>
+</body>
+</html>
