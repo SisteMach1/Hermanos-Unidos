@@ -1,9 +1,0 @@
-{
-  "name": "Hermanos Unidos - Iglesia Virtual",
-  "short_name": "Hermanos Unidos",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#0F172A",
-  "theme_color": "#FF6900",
-  "icons": [{"src":"https://via.placeholder.com/512/0F172A/FFFFFF?text=HU","sizes":"512x512","type":"image/png"}]
-}
