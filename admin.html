@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Total - Hermanos Unidos</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-slate-100 min-h-screen">
+<div id="login" class="min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm"><h1 class="font-bold text-xl text-center">Panel Control Total<br>Hermanos Unidos</h1><input id="pass" type="password" placeholder="Contraseña" class="mt-6 w-full border px-4 py-3 rounded-xl"><button onclick="login()" class="mt-3 w-full bg-slate-900 text-white py-3 rounded-xl font-bold">Entrar</button><div id="loginError" class="hidden text-red-600 text-xs mt-2 text-center">Contraseña incorrecta</div></div>
+</div>
+<div id="panel" class="hidden">
+<header class="bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50"><div class="font-bold">CONTROL TOTAL - <span class="churchName">Hermanos Unidos</span></div><div class="flex gap-2"><a href="index.html" class="bg-white/20 px-3 py-1.5 rounded-full text-xs">Ver Web</a><button onclick="logout()" class="bg-red-600 px-3 py-1.5 rounded-full text-xs">Salir</button></div></header>
+
+<div class="max-w-7xl mx-auto p-3">
+<div class="flex gap-2 overflow-x-auto pb-2">
+<button onclick="showTab('general')" class="tabBtn bg-slate-900 text-white px-4 py-2 rounded-full text-xs">1. General</button>
+<button onclick="showTab('hero')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">2. Hero / Inicio</button>
+<button onclick="showTab('predicas')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">3. Prédicas</button>
+<button onclick="showTab('videos')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">4. Videos</button>
+<button onclick="showTab('testimonios')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">5. Testimonios</button>
+<button onclick="showTab('sedes')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">6. Sedes / Horarios</button>
+<button onclick="showTab('radio')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">7. Radio / Música</button>
+<button onclick="showTab('donaciones')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">8. Donaciones</button>
+<button onclick="showTab('whatsapp')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">9. WhatsApp</button>
+<button onclick="showTab('stats')" class="tabBtn bg-white px-4 py-2 rounded-full text-xs">10. Estadísticas</button>
+</div>
+
+<!-- GENERAL -->
+<div id="tab-general" class="tab mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">⚙️ Configuración General - Control Total</h3>
+<div class="grid md:grid-cols-2 gap-3 mt-3">
+<div><label class="text-xs">Nombre Iglesia</label><input id="cfgNombre" class="w-full border px-3 py-2 rounded-xl text-sm"></div>
+<div><label class="text-xs">Subtítulo</label><input id="cfgSub" class="w-full border px-3 py-2 rounded-xl text-sm"></div>
+<div><label class="text-xs">Color Primario (naranja)</label><input id="cfgColor1" type="color" class="w-full h-10 border rounded-xl"></div>
+<div><label class="text-xs">Color Secundario</label><input id="cfgColor2" type="color" class="w-full h-10 border rounded-xl"></div>
+</div>
+<button onclick="guardarGeneral()" class="mt-3 bg-slate-900 text-white px-6 py-2 rounded-full text-sm">Guardar General</button>
+</div>
+
+<!-- HERO -->
+<div id="tab-hero" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">🏠 Ventana Hero / Inicio</h3>
+<label class="text-xs">Título Grande</label><input id="cfgHeroTitulo" class="w-full border px-3 py-2 rounded-xl text-sm mt-1">
+<label class="text-xs mt-2 block">Subtítulo</label><input id="cfgHeroSub" class="w-full border px-3 py-2 rounded-xl text-sm mt-1">
+<label class="text-xs mt-2 block">Devocional Título</label><input id="cfgDevTitulo" class="w-full border px-3 py-2 rounded-xl text-sm mt-1">
+<label class="text-xs mt-2 block">Devocional Texto</label><textarea id="cfgDevTexto" class="w-full border px-3 py-2 rounded-xl text-sm h-20 mt-1"></textarea>
+<button onclick="guardarHero()" class="mt-3 bg-slate-900 text-white px-6 py-2 rounded-full text-sm">Guardar Hero</button>
+</div>
+
+<!-- PREDICAS -->
+<div id="tab-predicas" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">📖 Ventana Prédicas Escritas - Control Total</h3>
+<div class="grid md:grid-cols-4 gap-2 mt-3">
+<input id="editPredTitulo" placeholder="Título" class="border px-3 py-2 rounded-xl text-sm">
+<select id="editPredCat" class="border px-3 py-2 rounded-xl text-sm"><option>Fe</option><option>Familia</option><option>Sanidad</option><option>Propósitos</option></select>
+<input id="editPredPastor" placeholder="Pastor" class="border px-3 py-2 rounded-xl text-sm">
+<button onclick="agregarPredicaAdmin()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm">Agregar</button>
+</div>
+<textarea id="editPredTexto" placeholder="Texto completo de la prédica" class="mt-2 w-full border px-3 py-2 rounded-xl text-sm h-24"></textarea>
+<div id="listaPredicasAdmin" class="mt-4"></div>
+</div>
+
+<!-- VIDEOS -->
+<div id="tab-videos" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">🎥 Ventana Videos</h3>
+<div class="grid md:grid-cols-3 gap-2 mt-3">
+<input id="editVidTitulo" placeholder="Título video" class="border px-3 py-2 rounded-xl text-sm">
+<input id="editVidYoutube" placeholder="ID YouTube ej: jfKfPfyJRdk" class="border px-3 py-2 rounded-xl text-sm">
+<button onclick="agregarVideoAdmin()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm">Agregar Video</button>
+</div>
+<div id="listaVideosAdmin" class="mt-4"></div>
+<div class="text-xs text-slate-500 mt-2">Para sacar ID: youtube.com/watch?v=XXXX -> XXXX es el ID</div>
+</div>
+
+<!-- TESTIMONIOS -->
+<div id="tab-testimonios" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">💬 Ventana Testimonios</h3>
+<div class="grid md:grid-cols-3 gap-2 mt-3">
+<input id="adminTNombre" placeholder="Nombre" class="border px-3 py-2 rounded-xl text-sm">
+<input id="adminTProv" placeholder="Provincia" class="border px-3 py-2 rounded-xl text-sm">
+<button onclick="agregarTestimonioAdmin()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm">Agregar</button>
+</div>
+<textarea id="adminTTexto" placeholder="Testimonio" class="mt-2 w-full border px-3 py-2 rounded-xl text-sm h-20"></textarea>
+<div id="listaTestiAdmin" class="mt-4"></div>
+</div>
+
+<!-- SEDES -->
+<div id="tab-sedes" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">🗺️ Ventana Sedes / Horarios</h3>
+<div class="grid md:grid-cols-5 gap-2 mt-3">
+<input id="sedeProv" placeholder="Provincia" class="border px-3 py-2 rounded-xl text-sm">
+<input id="sedeDir" placeholder="Dirección" class="border px-3 py-2 rounded-xl text-sm">
+<input id="sedeHor" placeholder="Horarios ej: Dom 10hs" class="border px-3 py-2 rounded-xl text-sm">
+<input id="sedeWa" placeholder="WhatsApp 549..." class="border px-3 py-2 rounded-xl text-sm">
+<button onclick="agregarSede()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm">Agregar Sede</button>
+</div>
+<div id="listaSedesAdmin" class="mt-4"></div>
+</div>
+
+<!-- RADIO -->
+<div id="tab-radio" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">🔴 Ventana Radio y Música YouTube</h3>
+<label class="text-xs">Nombre Radio</label><input id="cfgRadioNombre" class="w-full border px-3 py-2 rounded-xl text-sm mt-1">
+<div class="mt-4 grid md:grid-cols-3 gap-2">
+<input id="playTitulo" placeholder="Título canción" class="border px-3 py-2 rounded-xl text-sm">
+<input id="playYT" placeholder="ID YouTube música" class="border px-3 py-2 rounded-xl text-sm">
+<button onclick="agregarMusica()" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm">Agregar a Playlist</button>
+</div>
+<div id="listaPlaylistAdmin" class="mt-4"></div>
+<button onclick="guardarRadio()" class="mt-3 bg-slate-900 text-white px-6 py-2 rounded-full text-sm">Guardar Radio</button>
+</div>
+
+<!-- DONACIONES -->
+<div id="tab-donaciones" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">💰 Ventana Donaciones</h3>
+<label class="text-xs">Alias Naranja X</label><input id="cfgAlias" class="w-full border px-3 py-2 rounded-xl text-sm font-bold mt-1">
+<label class="text-xs mt-2 block">Meta mensual $</label><input id="cfgMeta" type="number" class="w-full border px-3 py-2 rounded-xl text-sm mt-1">
+<div class="mt-3">
+<label class="text-xs">Sumar donación manual</label><div class="flex gap-2 mt-1"><input id="montoDon" type="number" placeholder="5000" class="border px-3 py-2 rounded-xl text-sm"><button onclick="sumarDonacion()" class="bg-orange-600 text-white px-4 py-2 rounded-xl text-sm">Sumar</button><button onclick="resetDonaciones()" class="text-red-600 text-xs underline">Reset</button></div>
+</div>
+<div class="mt-4">Recaudado: $<span id="recaudadoAdmin"></span> / $<span id="metaAdmin"></span><div class="w-full bg-slate-200 h-3 rounded-full mt-1"><div id="barraAdmin" class="bg-orange-600 h-3 rounded-full"></div></div></div>
+<button onclick="guardarDonaciones()" class="mt-4 bg-slate-900 text-white px-6 py-2 rounded-full text-sm">Guardar Donaciones</button>
+</div>
+
+<!-- WHATSAPP -->
+<div id="tab-whatsapp" class="tab hidden mt-4 bg-white p-5 rounded-2xl">
+<h3 class="font-bold">📱 Ventana WhatsApp - Suscriptos y Mensajes Automáticos</h3>
+<textarea id="cfgWAMsg" class="w-full border px-3 py-2 rounded-xl text-sm h-24 mt-3"></textarea>
+<div class="text-[11px] text-slate-500">Usa {nombre} y {link} - Se reemplaza automático</div>
+<button onclick="guardarWA()" class="mt-2 bg-slate-900 text-white px-6 py-2 rounded-full text-sm">Guardar Mensaje</button>
+<div class="mt-6 flex gap-2"><button onclick="exportarWA()" class="bg-green-600 text-white px-4 py-2 rounded-full text-xs">Exportar CSV</button><button onclick="copiarNumeros()" class="bg-slate-900 text-white px-4 py-2 rounded-full text-xs">Copiar Números</button><button onclick="borrarWA()" class="text-red-600 text-xs underline">Borrar Todos</button></div>
+<div id="tablaWA" class="mt-4 max-h-64 overflow-auto text-xs border rounded-xl"></div>
+</div>
+
+<!-- STATS -->
+<div id="tab-stats" class="tab hidden mt-4 grid md:grid-cols-4 gap-3">
+<div class="bg-white p-5 rounded-2xl"><div class="text-xs">Visitas</div><div class="text-2xl font-bold" id="statVisitas">0</div></div>
+<div class="bg-white p-5 rounded-2xl"><div class="text-xs">Suscriptos WA</div><div class="text-2xl font-bold" id="statWA">0</div></div>
+<div class="bg-white p-5 rounded-2xl"><div class="text-xs">Donaciones</div><div class="text-2xl font-bold text-orange-600" id="statDon">0</div></div>
+<div class="bg-white p-5 rounded-2xl"><div class="text-xs">Oraciones</div><div class="text-2xl font-bold" id="statOra">0</div></div>
+<div class="md:col-span-4 bg-white p-5 rounded-2xl"><h3 class="font-bold">🙏 Pedidos de Oración</h3><div id="tablaOraciones" class="mt-3 max-h-64 overflow-auto text-xs border rounded-xl"></div></div>
+</div>
+
+</div>
+</div>
+<script src="admin.js"></script>
+</body></html>
